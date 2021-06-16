@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+      Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply text-base;
+  }
+  h1 {
+    @apply desktop:text-7xl labtop:text-6xl tablet:text-5xl mobile:text-4xl;
+  }
+  h2 {
+    @apply desktop:text-6xl labtop:text-5xl tablet:text-4xl mobile:text-3xl;
+  }
+  h3 {
+    @apply desktop:text-5xl labtop:text-4xl tablet:text-3xl mobile:text-2xl;
+  }
+  h4 {
+    @apply desktop:text-4xl labtop:text-3xl tablet:text-2xl mobile:text-xl;
+  }
+  h5 {
+    @apply desktop:text-3xl labtop:text-2xl tablet:text-xl mobile:text-lg;
+  }
+  h6 {
+    @apply desktop:text-2xl labtop:text-xl tablet:text-lg mobile:text-base;
+  }
+  p,
+  a {
+    @apply desktop:text-lg labtop:text-base tablet:text-sm mobile:text-xs;
+  }
+  label {
+    @apply desktop:text-base labtop:text-sm tablet:text-xs;
+  }
+}
+
+@layer components {
+  .r-p {
+    @apply desktop:px-24 labtop:px-16 sm-labtop:px-12 tablet:px-6 mobile:px-2;
+  }
+}
