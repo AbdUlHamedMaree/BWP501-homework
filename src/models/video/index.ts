@@ -37,7 +37,7 @@ const schema = new Schema<Video>({
 
 // 3. Create a Model.
 export const VideoModel =
-  (models.Video as Model<Video>) || model<Video>('Video', schema);
+  (models?.Video as Model<Video>) || model<Video>('Video', schema);
 
 export const mockVideo = () => ({
   title: shortLorem(3),
