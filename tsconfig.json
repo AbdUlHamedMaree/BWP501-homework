@@ -17,6 +17,7 @@
     "paths": {
       "@/components": ["./components"],
       "@/constants": ["./constants"],
+      "@/lib": ["./lib"],
       "@/middleware": ["./middleware"],
       "@/models": ["./models"],
       "@/utils": ["./utils"]

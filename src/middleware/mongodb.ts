@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 export const connectDB =
-  (handler: (req: NextApiRequest, res: NextApiResponse) => Promise<unknown>) =>
+  <T>(handler: NextApiHandler<T>) =>
   async (req: NextApiRequest, res: NextApiResponse) => {
     if (mongoose.connections[0].readyState) {
       // Use current db connection

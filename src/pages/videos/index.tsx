@@ -3,7 +3,7 @@ import { LoadingComponent, VideoCard } from '@/components';
 import { mockVideo, Video } from '@/models';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { request } from '@/middleware';
+import { request } from '@/lib';
 
 const videoData = Array.from({ length: 20 }, mockVideo);
 const VideosPage: React.FC = () => {
