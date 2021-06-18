@@ -30,6 +30,6 @@
     "typescript": "4.3.2"
   },
   "cacheDirectories": [
-    ".next/cache"
+    "build/cache"
   ]
 }
