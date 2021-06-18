@@ -1,7 +1,6 @@
 {
   "name": "bwp501",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "dev": "next dev -p $PORT",
     "build": "next build",
@@ -29,5 +28,8 @@
     "postcss": "^8.3.4",
     "tailwindcss": "^2.1.4",
     "typescript": "4.3.2"
-  }
+  },
+  "cacheDirectories": [
+    ".next/cache"
+  ]
 }
