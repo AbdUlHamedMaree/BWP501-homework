@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { NextApiRequest, NextApiResponse } from 'next';
-
 export const connectDB =
   (handler: (req: NextApiRequest, res: NextApiResponse) => Promise<unknown>) =>
   async (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,7 +18,7 @@ export const connectDB =
         useNewUrlParser: true,
       });
     } catch (e) {
-      console.error(e);
+      console.error('error from connectDB:', e);
     }
     return handler(req, res);
   };
