@@ -1,16 +1,25 @@
 import { Row, Col } from 'antd';
-import { VideoCard } from '@/components';
-import { mockVideo } from '@/models';
-import React from 'react';
+import { LoadingComponent, VideoCard } from '@/components';
+import { mockVideo, Video } from '@/models';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { request } from '@/middleware';
 
 const videoData = Array.from({ length: 20 }, mockVideo);
 const VideosPage: React.FC = () => {
     const { push } = useRouter();
+    const [videos, setVideos] = useState<Video[]>()
+
+    useEffect(() => {
+        request.get('/api/videos').then(e => setVideos(e.data))
+    }, [])
+
+    if (typeof videos === 'undefined')
+        return <LoadingComponent />
 
     return (
         <Row gutter={[16, 16]} justify='space-between'>
-            {videoData.map((el, i) =>
+            {videos.map((el, i) =>
                 <Col key={i}>
                     <VideoCard
                         title={el.title}

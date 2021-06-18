@@ -1,7 +1,8 @@
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb, Button } from 'antd';
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { MockVideoButton } from 'components/smart';
 
 const { Header, Footer, Content } = Layout;
 
@@ -38,6 +39,7 @@ export const MainLayout: React.FC = ({ children }) => {
                         return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
                     })}
                 </Menu>
+                <MockVideoButton />
             </Header>
             <Content className='r-p'>
                 {breadcrumb}
