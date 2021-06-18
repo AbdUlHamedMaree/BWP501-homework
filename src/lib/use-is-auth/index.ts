@@ -8,11 +8,11 @@ export const useIsAuth = (redirect = false) => {
   useEffect(() => {
     request
       .get('/api/auth/user')
-      .then(e => {
-        setAuth(true);
-      })
       .catch(e => {
         redirect && push('/auth/login');
+      })
+      .then(e => {
+        setAuth(true);
       });
   }, []);
   return { loading: typeof auth === 'undefined', auth };

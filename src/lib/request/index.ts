@@ -6,30 +6,37 @@ const request = axios.create();
 request.interceptors.response.use(undefined, (error: AxiosError) => {
   const url = error.config.baseURL ?? '' + '' + error.config.url ?? '';
   console.error(error.config);
+  let meta = { title: '', description: '' };
+  let err = '';
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
-    let meta = apiError[error.response?.status ?? 0];
+    meta = apiError[error.response?.status ?? 0];
     if (typeof meta === 'undefined') meta = apiError[0];
-
-    notification.open({
-      message: error.response.statusText,
-      description: meta.description,
-      type: 'error',
-    });
-    const err = `The request (${url}) was made and the server responded with ${error.response.status}`;
-    throw Error(err);
+    meta.title = error.response.statusText;
+    err = `The request (${url}) was made and the server responded with ${error.response.status}`;
   } else if (error.request) {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
     // http.ClientRequest in node.js
-    const err = `The request (${url}) was made but no response was received, the request: ${error.request}`;
-    throw Error(err);
+    meta = {
+      title: 'No Network',
+      description: 'Check your internet connections and try agin',
+    };
+    err = `The request (${url}) was made but no response was received, the request: ${error.request}`;
   } else {
     // Something happened in setting up the request that triggered an Error
-    const err = `Something happened in setting up the request (${url}) that triggered an Error`;
-    throw Error(err);
+    meta = apiError[0];
+    err = `Something happened in setting up the request (${url}) that triggered an Error`;
   }
+
+  notification.open({
+    message: meta.title,
+    description: meta.description,
+    type: 'error',
+  });
+
+  throw Error(err);
 });
 
 export { request };
