@@ -8,7 +8,7 @@ const { Header, Footer, Content } = Layout;
 
 
 export const SiteLayout: React.FC = ({ children }) => {
-    const { asPath } = useRouter()
+    const { pathname, asPath } = useRouter()
     const { loading, auth } = useIsAuth()
 
     const breadcrumb = React.useMemo(() => {
@@ -33,7 +33,7 @@ export const SiteLayout: React.FC = ({ children }) => {
         <Layout className="min-h-screen">
             <Header className='flex space-x-4 items-center r-p' style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
                 <div className="float-left w-32 h-8 bg-gray-400" />
-                <Menu theme="dark" mode="horizontal" selectedKeys={[asPath]}>
+                <Menu theme="dark" mode="horizontal" selectedKeys={[pathname]}>
                     <Menu.Item key='/'>
                         <Link href='/'>
                             {'Home'}
