@@ -7,7 +7,7 @@ type Props = {
     afterFinish?: () => void
 } & ButtonProps;
 
-export const MockVideoButton: React.FC<Props> = ({ afterFinish, children, ...rest }) => {
+export const MockArtistButton: React.FC<Props> = ({ afterFinish, children, ...rest }) => {
     const [loading, setLoading] = useState(false);
 
     return (
@@ -16,13 +16,13 @@ export const MockVideoButton: React.FC<Props> = ({ afterFinish, children, ...res
             {...rest}
             onClick={async () => {
                 setLoading(true)
-                await request.post('/videos/mock')
+                await request.post('/artists/mock')
                 setLoading(false)
                 afterFinish && afterFinish()
             }}
             loading={loading}
         >
-            MOCK VIDEO
+            MOCK ARTIST
         </Button>
     )
 }

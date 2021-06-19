@@ -5,8 +5,7 @@ import _ from 'lodash';
 type Language = 'ar' | 'en';
 const language = ['ar', 'en'] as const;
 
-// 1. Create an interface representing a document in MongoDB.
-export interface Video extends Document {
+export interface IVideo extends Document {
   title: string;
   description: string;
   overview: string;
@@ -19,9 +18,9 @@ export interface Video extends Document {
   quality: string;
   duration: number;
 }
+
 const requiredString = { type: String, required: true } as const;
-// 2. Create a Schema corresponding to the document interface.
-const schema = new Schema<Video>({
+const schema = new Schema<IVideo>({
   title: requiredString,
   description: requiredString,
   overview: requiredString,
@@ -35,11 +34,10 @@ const schema = new Schema<Video>({
   duration: { type: Number, required: true },
 });
 
-// 3. Create a Model.
 export const VideoModel =
-  (models?.Video as Model<Video>) || model<Video>('Video', schema);
+  (models?.Video as Model<IVideo>) || model<IVideo>('Video', schema);
 
-export const mockVideo = () => ({
+export const mockVideo = (): Omit<IVideo, keyof Document> => ({
   title: shortLorem(3),
   overview: shortLorem(6),
   description: shortLorem(100),

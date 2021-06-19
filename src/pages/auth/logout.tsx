@@ -11,7 +11,7 @@ interface Props {
 const page: React.FC<Props> = () => {
     const { replace } = useRouter()
     useEffect(() => {
-        request.post('/api/auth/logout').then(e => replace('/'));
+        request.post('/auth/logout').then(e => replace('/'));
     }, [])
     return (
         <LoadingPage />

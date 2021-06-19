@@ -17,7 +17,7 @@ const page: React.FC<Props> = () => {
     const onFinish = async (values: any) => {
         setLoading(true)
         try {
-            await request.post('/api/auth/login', values);
+            await request.post('/auth/login', values, { headers: { 'Show-Notification': false } });
             replace('/admin');
         }
         catch (e) {
@@ -27,30 +27,32 @@ const page: React.FC<Props> = () => {
     };
 
     return (
-        <div>
-            <Form onFinish={onFinish}>
-                <Form.Item
-                    name="username"
-                    rules={[{ required: true, message: 'Please input your Username!' }]}
-                >
-                    <Input prefix={<UserOutlined />} placeholder="Username" />
-                </Form.Item>
-                <Form.Item
-                    name="password"
-                    rules={[{ required: true, message: 'Please input your Password!' }]}
-                >
-                    <Input
-                        prefix={<LockOutlined />}
-                        type="password"
-                        placeholder="Password"
-                    />
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" loading={loading}>
-                        Log in
-                    </Button>
-                </Form.Item>
-            </Form>
+        <div className='flex justify-center'>
+            <div className='w-full max-w-xl'>
+                <Form onFinish={onFinish}>
+                    <Form.Item
+                        name="username"
+                        rules={[{ required: true, message: 'Please input your Username!' }]}
+                    >
+                        <Input prefix={<UserOutlined />} placeholder="Username" />
+                    </Form.Item>
+                    <Form.Item
+                        name="password"
+                        rules={[{ required: true, message: 'Please input your Password!' }]}
+                    >
+                        <Input
+                            prefix={<LockOutlined />}
+                            type="password"
+                            placeholder="Password"
+                        />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit" loading={loading}>
+                            Log in
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </div>
         </div>
     )
 }

@@ -2,7 +2,10 @@
   "extends": ["next", "next/core-web-vitals"],
   "rules": {
     "@next/next/no-img-element": "off",
+    "@next/next/link-passhref": "off",
+
+    "react-hooks/rules-of-hooks": "off",
     "react/display-name": "off",
-    "@next/next/link-passhref": "off"
+    "react-hooks/exhaustive-deps": "off"
   }
 }

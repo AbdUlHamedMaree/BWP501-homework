@@ -1,6 +1,6 @@
 import { Row, Col } from 'antd';
 import { LoadingComponent, VideoCard } from '@/components';
-import { mockVideo, Video } from '@/models';
+import { mockVideo, IVideo } from '@/models';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { request } from '@/lib';
@@ -8,10 +8,10 @@ import { request } from '@/lib';
 const videoData = Array.from({ length: 20 }, mockVideo);
 const VideosPage: React.FC = () => {
     const { push } = useRouter();
-    const [videos, setVideos] = useState<Video[]>()
+    const [videos, setVideos] = useState<IVideo[]>()
 
     useEffect(() => {
-        request.get('/api/videos').then(e => setVideos(e.data))
+        request.get('/videos').then(e => setVideos(e.data))
     }, [])
 
     if (typeof videos === 'undefined')

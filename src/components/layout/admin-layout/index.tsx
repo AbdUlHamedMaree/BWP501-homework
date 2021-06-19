@@ -1,12 +1,11 @@
-import { Layout, Menu, Breadcrumb, Button } from 'antd';
+import { Layout, Menu, Breadcrumb } from 'antd';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { MockVideoButton } from 'components/smart';
-import { PieChartOutlined, DesktopOutlined, UserOutlined, TeamOutlined, FileOutlined, VideoCameraOutlined, HomeOutlined, LogoutOutlined } from '@ant-design/icons';
+import { VideoCameraOutlined, HomeOutlined, LogoutOutlined, StarOutlined } from '@ant-design/icons';
 import SubMenu from 'antd/lib/menu/SubMenu';
 
-const { Header, Footer, Content, Sider } = Layout;
+const { Footer, Content, Sider } = Layout;
 
 
 export const AdminLayout: React.FC = ({ children }) => {
@@ -32,7 +31,7 @@ export const AdminLayout: React.FC = ({ children }) => {
 
     return <Layout className="min-h-screen">
         <Sider collapsible collapsed={collapsed} onCollapse={() => setCollapsed(c => !c)}>
-            <div className="w-16 h-16 bg-gray-300 " />
+            <div className="w-[75%] mt-4 mx-auto h-8 bg-gray-300" />
             <Menu theme="dark" mode='inline' selectedKeys={[pathname]}>
                 <Menu.Item key='/admin' icon={<HomeOutlined />}>
                     <Link href='/admin'>
@@ -40,18 +39,36 @@ export const AdminLayout: React.FC = ({ children }) => {
                     </Link>
                 </Menu.Item>
 
-                <SubMenu key="/videos" icon={<VideoCameraOutlined />} title="Videos">
-                    <Menu.Item key="/videos">
-                        <Link href='/videos'>
+                <SubMenu key="admin-videos" icon={<VideoCameraOutlined />} title="Videos">
+                    <Menu.Item key="/admin/videos">
+                        <Link href='/admin/videos'>
                             {'View'}
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="/videos/add">
-                        <Link href='/videos/add'>
+                    <Menu.Item key="/admin/videos/new">
+                        <Link href='/admin/videos/new'>
                             {'Add'}
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="/videos/[id]">
+                    <Menu.Item key="/admin/videos/[id]">
+                        <Link href='#'>
+                            {'Edit'}
+                        </Link>
+                    </Menu.Item>
+                </SubMenu>
+
+                <SubMenu key="admin-artists" icon={<StarOutlined />} title="Artists">
+                    <Menu.Item key="/admin/artists">
+                        <Link href='/admin/artists'>
+                            {'View'}
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="/admin/artists/new">
+                        <Link href='/admin/artists/new'>
+                            {'Add'}
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="/admin/artists/[id]">
                         <Link href='#'>
                             {'Edit'}
                         </Link>
@@ -69,35 +86,11 @@ export const AdminLayout: React.FC = ({ children }) => {
         <Layout className="site-layout">
             <Content className='m-4'>
                 {breadcrumb}
-                <div className="min-h-[300px] h-full p-4 bg-white relative">
+                <div className="min-h-[300px] p-4 bg-white relative">
                     {children}
                 </div>
             </Content>
             <Footer className='text-center'>BWP501 Homework - ITE F20 - Created By abdulhamed_109379</Footer>
         </Layout>
     </Layout>
-
-    return (
-        <Layout className="min-h-screen">
-            <Header className='flex space-x-4 items-center r-p'>
-                <div className="float-left w-32 h-8 bg-gray-400" />
-                <Menu theme="dark" mode="horizontal" selectedKeys={[pathname]}>
-                    <Menu.Item key='/videos'>
-                        {'Videos'}
-                    </Menu.Item>
-                    <Menu.Item key='/artists'>
-                        {'Artists'}
-                    </Menu.Item>
-                </Menu>
-                {/* <MockVideoButton /> */}
-            </Header>
-            <Content className='r-p'>
-                {breadcrumb}
-                <div className="min-h-[300px] h-full p-4 bg-white relative">
-                    {children}
-                </div>
-            </Content>
-            <Footer className='text-center'>Ant Design ©2018 Created by Ant UED</Footer>
-        </Layout>
-    )
 }

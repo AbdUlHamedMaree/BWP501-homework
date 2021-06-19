@@ -28,7 +28,9 @@ export const SiteLayout: React.FC = ({ children }) => {
             </Breadcrumb>
         );
     }, [asPath]);
-    console.log({ loading, auth })
+
+    console.log({ loading, auth });
+
     return (
         <Layout className="min-h-screen">
             <Header className='flex space-x-4 items-center r-p' style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
@@ -57,8 +59,8 @@ export const SiteLayout: React.FC = ({ children }) => {
                                         {'Admin'}
                                     </Link>
                                 </Menu.Item>
-                                : <Menu.Item key='/login'>
-                                    <Link href='/login'>
+                                : <Menu.Item key='/auth/login'>
+                                    <Link href='/auth/login'>
                                         {'Login'}
                                     </Link>
                                 </Menu.Item>
@@ -70,7 +72,7 @@ export const SiteLayout: React.FC = ({ children }) => {
             </Header>
             <Content className='r-p' style={{ marginTop: 64 }}>
                 {breadcrumb}
-                <div className="min-h-[300px] h-full p-4 bg-white relative">
+                <div className="min-h-[300px] w-full h-full p-4 bg-white relative">
                     {children}
                 </div>
             </Content>

@@ -1,16 +1,30 @@
 import _ from 'lodash';
 import { surname, name } from 'react-lorem-ipsum';
-import { randomAvatar } from 'utils/random-avatar';
-import { shortLorem } from 'utils/short-lorem';
-export type Artist = {
+
+import { Document, Schema, model, models, Model } from 'mongoose';
+import { randomAvatar, shortLorem } from '@/utils';
+
+export interface IArtist extends Document {
   firstName: string;
   lastName: string;
   age: number;
   avatar: string;
   about: string;
-};
+}
 
-export const mockArtist = (): Artist => ({
+const requiredString = { type: String, required: true } as const;
+const schema = new Schema<IArtist>({
+  firstName: requiredString,
+  lastName: requiredString,
+  age: requiredString,
+  avatar: requiredString,
+  about: requiredString,
+});
+
+export const ArtistModel =
+  (models?.Artist as Model<IArtist>) || model<IArtist>('Artist', schema);
+
+export const mockArtist = (): Omit<IArtist, keyof Document> => ({
   firstName: name(),
   lastName: surname(),
   age: _.random(18, 60),

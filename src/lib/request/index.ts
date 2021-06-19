@@ -2,7 +2,10 @@ import { notification } from 'antd';
 import axios, { AxiosError } from 'axios';
 import { apiError } from 'enums';
 
-const request = axios.create();
+const request = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: { 'Show-Notification': true },
+});
 request.interceptors.response.use(undefined, (error: AxiosError) => {
   const url = error.config.baseURL ?? '' + '' + error.config.url ?? '';
   console.error(error.config);
@@ -29,12 +32,12 @@ request.interceptors.response.use(undefined, (error: AxiosError) => {
     meta = apiError[0];
     err = `Something happened in setting up the request (${url}) that triggered an Error`;
   }
-
-  notification.open({
-    message: meta.title,
-    description: meta.description,
-    type: 'error',
-  });
+  if (error.config.headers['Show-Notification'])
+    notification.open({
+      message: meta.title,
+      description: meta.description,
+      type: 'error',
+    });
 
   throw Error(err);
 });

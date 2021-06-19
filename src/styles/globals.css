@@ -50,8 +50,7 @@ body {
   h6 {
     @apply desktop:text-2xl labtop:text-xl tablet:text-lg mobile:text-base;
   }
-  p,
-  a {
+  p {
     @apply desktop:text-lg labtop:text-base tablet:text-sm mobile:text-xs;
   }
   label {
