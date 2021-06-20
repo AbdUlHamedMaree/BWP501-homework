@@ -1,12 +1,14 @@
-import { Button, Form, Input } from 'antd';
-import React, { useState } from 'react';
+import { Button, Form, Input, Select } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { request } from '@/lib';
+import { IArtist } from '@/models';
 
 
 export const SingleVedioPage: React.FC = () => {
     const { push } = useRouter()
     const [loading, setLoading] = useState(false)
+    const [artists, setArtists] = useState<IArtist[]>()
 
 
     const onFinish = async (values: any) => {
@@ -22,6 +24,19 @@ export const SingleVedioPage: React.FC = () => {
 
         setLoading(false)
     };
+
+    const fetchArtists = useCallback(async () => {
+        setLoading(true)
+        try {
+            const result = await request.get('/artists');
+            setArtists(result.data);
+        } catch { }
+        setLoading(false)
+    }, []);
+
+    useEffect(() => {
+        fetchArtists();
+    }, [])
 
     return (
         <div className=''>
@@ -107,6 +122,23 @@ export const SingleVedioPage: React.FC = () => {
                     rules={[{ required: true }]}
                 >
                     <Input placeholder="duration" />
+                </Form.Item>
+
+                <Form.Item
+                    label="artists"
+                    name="artists"
+                >
+                    {
+                        artists ?
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                style={{ width: '100%' }}
+                                placeholder="artists"
+                                options={artists.map(el => ({ label: el.firstName, value: el._id }))}
+                            />
+                            : null
+                    }
                 </Form.Item>
 
 

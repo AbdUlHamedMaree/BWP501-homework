@@ -1,5 +1,5 @@
 import { connectDB } from '@/middleware';
-import { VideoModel } from '@/models';
+import { ArtistModel, VideoModel } from '@/models';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) =>
@@ -7,13 +7,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) =>
     try {
       switch (req.method) {
         case 'GET':
-          const all = await VideoModel.find({});
+          const all = await VideoModel.find({}).populate('artists');
           res.status(200).json(all);
           resolve();
           break;
 
         case 'POST':
           const newVideo = await VideoModel.create(req.body);
+
+          await ArtistModel.updateMany(
+            { _id: newVideo.artists },
+            { $push: { videos: newVideo._id } },
+          );
+
           res.status(201).json(newVideo);
           resolve();
           break;

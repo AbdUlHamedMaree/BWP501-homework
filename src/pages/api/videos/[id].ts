@@ -1,5 +1,6 @@
 import { connectDB } from '@/middleware';
-import { mockVideo, VideoModel } from '@/models';
+import { ArtistModel, IVideo, mockVideo, VideoModel } from '@/models';
+import { difference } from '@/utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) =>
@@ -21,26 +22,53 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) =>
           break;
 
         case 'PUT':
-          const updated = await VideoModel.findByIdAndUpdate(id, req.body, {
-            new: true,
-            runValidators: true,
-          });
-          if (!updated) {
+          const video = req.body as IVideo;
+
+          const newArtists = video.artists || [];
+
+          const oldVideo = await VideoModel.findOne({ _id: id });
+
+          if (!oldVideo) {
             res.status(400).json({ message: 'not-found' });
-            resolve();
+            return resolve();
           }
-          res.status(201).json(updated);
+
+          const oldArtists = oldVideo.artists;
+
+          Object.assign(oldVideo, video);
+          const newVideo = await oldVideo.save();
+
+          const added = difference(newArtists, oldArtists);
+          const removed = difference(oldArtists, newArtists);
+          await ArtistModel.updateMany(
+            { _id: added },
+            { $addToSet: { videos: newVideo._id } },
+          );
+          await ArtistModel.updateMany(
+            { _id: removed },
+            { $pull: { videos: newVideo._id } },
+          );
+
+          res.status(201).json(newVideo);
           resolve();
           break;
 
         case 'DELETE':
-          const deleted = await VideoModel.deleteOne({ _id: id });
-          if (!deleted) {
+          const toDeleted = await VideoModel.findOne({ _id: id });
+          if (!toDeleted) {
             res.status(400).json({ message: 'not-found' });
             resolve();
+          } else {
+            await toDeleted.remove();
+
+            await ArtistModel.updateMany(
+              { _id: toDeleted.artists },
+              { $pull: { videos: toDeleted._id } },
+            );
+
+            res.status(203).json(toDeleted);
+            resolve();
           }
-          res.status(203).json(deleted);
-          resolve();
           break;
 
         default:

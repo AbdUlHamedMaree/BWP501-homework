@@ -1,7 +1,7 @@
 import { LoadingComponent } from '@/components';
-import { Button, Form, Input } from 'antd';
-import { IVideo } from '@/models';
-import React, { useEffect, useState } from 'react';
+import { Button, Form, Input, Select } from 'antd';
+import { IArtist, IVideo } from '@/models';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { request } from '@/lib';
 
@@ -9,6 +9,7 @@ import { request } from '@/lib';
 export const SingleVedioPage: React.FC = () => {
     const { query, push, replace } = useRouter()
     const { id } = query;
+    const [artists, setArtists] = useState<IArtist[]>()
     const [video, setVideo] = useState<IVideo>()
     const [loading, setLoading] = useState(false)
 
@@ -39,6 +40,15 @@ export const SingleVedioPage: React.FC = () => {
         setLoading(false)
     };
 
+    const fetchArtists = useCallback(async () => {
+        setLoading(true)
+        try {
+            const result = await request.get('/artists');
+            setArtists(result.data);
+        } catch { }
+        setLoading(false)
+    }, []);
+
     const onDelete = async () => {
         setLoading(true)
 
@@ -52,6 +62,10 @@ export const SingleVedioPage: React.FC = () => {
 
         setLoading(false)
     };
+
+    useEffect(() => {
+        fetchArtists();
+    }, [])
 
     if (typeof video === 'undefined')
         return <LoadingComponent />
@@ -157,6 +171,22 @@ export const SingleVedioPage: React.FC = () => {
                     <Input placeholder="duration" />
                 </Form.Item>
 
+                <Form.Item
+                    label="artists"
+                    name="artists"
+                >
+                    {
+                        artists ?
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                style={{ width: '100%' }}
+                                placeholder="artists"
+                                options={artists.map(el => ({ label: el.firstName, value: el._id }))}
+                            />
+                            : null
+                    }
+                </Form.Item>
 
                 <Form.Item>
                     <div className='flex space-x-2'>

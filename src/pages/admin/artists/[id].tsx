@@ -1,7 +1,7 @@
 import { LoadingComponent } from '@/components';
-import { Button, Form, Input } from 'antd';
-import { IArtist } from '@/models';
-import React, { useEffect, useState } from 'react';
+import { Button, Form, Input, InputNumber, Select } from 'antd';
+import { IArtist, IVideo } from '@/models';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { request } from '@/lib';
 
@@ -9,8 +9,10 @@ import { request } from '@/lib';
 export const SingleVedioPage: React.FC = () => {
     const { query, push, replace } = useRouter()
     const { id } = query;
-    const [video, setVideo] = useState<IArtist>()
+    const [video, setVideo] = useState<IVideo>()
     const [loading, setLoading] = useState(false)
+    const [videos, setVideos] = useState<IVideo[]>()
+
 
     useEffect(() => {
         id && (async () => {
@@ -53,6 +55,19 @@ export const SingleVedioPage: React.FC = () => {
         setLoading(false)
     };
 
+    const fetchVideos = useCallback(async () => {
+        setLoading(true)
+        try {
+            const result = await request.get('/videos');
+            setVideos(result.data);
+        } catch { }
+        setLoading(false)
+    }, []);
+
+    useEffect(() => {
+        fetchVideos();
+    }, [])
+
     if (typeof video === 'undefined')
         return <LoadingComponent />
 
@@ -90,7 +105,7 @@ export const SingleVedioPage: React.FC = () => {
                     name="age"
                     rules={[{ required: true }]}
                 >
-                    <Input placeholder="age" />
+                    <InputNumber placeholder="age" style={{ width: '100%' }} />
                 </Form.Item>
 
                 <Form.Item
@@ -107,6 +122,23 @@ export const SingleVedioPage: React.FC = () => {
                     rules={[{ required: true }]}
                 >
                     <Input placeholder="about" />
+                </Form.Item>
+
+                <Form.Item
+                    label="videos"
+                    name="videos"
+                >
+                    {
+                        videos ?
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                style={{ width: '100%' }}
+                                placeholder="videos"
+                                options={videos.map(el => ({ label: el.title, value: el._id }))}
+                            />
+                            : null
+                    }
                 </Form.Item>
 
                 <Form.Item>

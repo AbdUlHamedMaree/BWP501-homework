@@ -1,6 +1,6 @@
-import { Table, Image, Button } from 'antd';
+import { Table, Image, Button, Tag } from 'antd';
 import { MockVideoButton } from '@/components';
-import { IVideo } from '@/models';
+import { IArtist, IVideo } from '@/models';
 import React, { useCallback, useEffect, useState } from 'react';
 import { request } from '@/lib';
 import { ColumnsType } from 'antd/lib/table';
@@ -117,6 +117,21 @@ const VideosPage: React.FC = () => {
             title: 'Duration',
             width: 150,
             ...useSearchableField('duration')
+        },
+        {
+            title: 'Artists',
+            dataIndex: 'artists',
+            key: 'artists',
+            width: 150,
+            render: (arr: IArtist[]) => <div className='flex flex-wrap'>
+                {arr ? arr.map(el =>
+                    <div key={el._id} className='m-1'>
+                        <Tag>
+                            {el.firstName}
+                        </Tag>
+                    </div>
+                ) : null}
+            </div>
         },
         {
             dataIndex: '_id',

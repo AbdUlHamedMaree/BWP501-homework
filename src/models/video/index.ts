@@ -1,6 +1,7 @@
-import { Document, Schema, model, models, Model } from 'mongoose';
+import { Document, Schema, model, models, Model, Types } from 'mongoose';
 import { randomDate, randomIamge, shortLorem } from '@/utils';
 import _ from 'lodash';
+import { IArtist } from 'models/artist';
 
 type Language = 'ar' | 'en';
 const language = ['ar', 'en'] as const;
@@ -17,6 +18,7 @@ export interface IVideo extends Document {
   category: string;
   quality: string;
   duration: number;
+  artists: (string | IArtist)[];
 }
 
 const requiredString = { type: String, required: true } as const;
@@ -32,6 +34,7 @@ const schema = new Schema<IVideo>({
   category: requiredString,
   quality: requiredString,
   duration: { type: Number, required: true },
+  artists: [{ type: Types.ObjectId, ref: 'Artist' }],
 });
 
 export const VideoModel =
@@ -49,4 +52,5 @@ export const mockVideo = (): Omit<IVideo, keyof Document> => ({
   quality: _.random(1000).toString(),
   type: shortLorem(1),
   duration: _.random(1, 3, true) * 60 * 60,
+  artists: [],
 });
