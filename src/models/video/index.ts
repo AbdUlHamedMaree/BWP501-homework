@@ -1,6 +1,5 @@
 import { Document, Schema, model, models, Model, Types } from 'mongoose';
-import { randomDate, randomIamge, shortLorem } from '@/utils';
-import _ from 'lodash';
+import { mock } from '@/utils';
 import { IArtist } from 'models/artist';
 
 type Language = 'ar' | 'en';
@@ -41,16 +40,16 @@ export const VideoModel =
   (models?.Video as Model<IVideo>) || model<IVideo>('Video', schema);
 
 export const mockVideo = (): Omit<IVideo, keyof Document> => ({
-  title: shortLorem(3),
-  overview: shortLorem(6),
-  description: shortLorem(100),
-  cover: randomIamge(),
-  category: shortLorem(2),
-  country: shortLorem(1),
-  lang: language[_.random(0, 1)],
-  publishDate: randomDate().toISOString(),
-  quality: _.random(1000).toString(),
-  type: shortLorem(1),
-  duration: _.random(1, 3, true) * 60 * 60,
+  title: mock.lorem(3),
+  overview: mock.lorem(10),
+  description: mock.lorem(50),
+  cover: mock.image(mock.or(300, 200), mock.or(300, 200)),
+  category: mock.lorem(2),
+  country: mock.lorem(1),
+  lang: mock.or(...language),
+  publishDate: mock.date().toISOString(),
+  quality: mock.or(360, 480, 720, 1080) + '',
+  type: mock.lorem(1),
+  duration: mock.number(1, 3, true) * 60 * 60,
   artists: [],
 });

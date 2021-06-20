@@ -1,9 +1,6 @@
-import _ from 'lodash';
-import { surname, name } from 'react-lorem-ipsum';
-
 import { Document, Schema, model, models, Model, Types } from 'mongoose';
-import { randomAvatar, shortLorem } from '@/utils';
-import { IVideo, mockVideo } from 'models/video';
+import { mock } from '@/utils';
+import { IVideo } from 'models/video';
 
 export interface IArtist extends Document {
   firstName: string;
@@ -28,10 +25,10 @@ export const ArtistModel =
   (models?.Artist as Model<IArtist>) || model<IArtist>('Artist', schema);
 
 export const mockArtist = (): Omit<IArtist, keyof Document> => ({
-  firstName: name(),
-  lastName: surname(),
-  age: _.random(18, 60),
-  avatar: randomAvatar(150),
-  about: shortLorem(20),
+  firstName: mock.firstname(),
+  lastName: mock.lastname(),
+  age: mock.number(19, 60),
+  avatar: mock.avatar(100),
+  about: mock.lorem(20),
   videos: [],
 });
