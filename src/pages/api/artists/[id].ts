@@ -12,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) =>
 
       switch (req.method) {
         case 'GET':
-          const single = await ArtistModel.findById(id);
+          const single = await ArtistModel.findById(id).populate('videos');
           if (!single) {
             res.status(400).json({ message: 'not-found' });
             resolve();

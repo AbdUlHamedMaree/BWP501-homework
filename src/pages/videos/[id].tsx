@@ -1,12 +1,27 @@
-import { ArtistCard, FillImage } from '@/components';
+import { ArtistCard, FillImage, LoadingComponent } from '@/components';
 import { Col, Collapse, Row } from 'antd';
-import { random } from 'lodash';
-import { mockVideo, mockArtist } from '@/models';
-import React from 'react';
+import { IVideo } from '@/models';
+import React, { useEffect, useState } from 'react';
+import { request } from 'lib/request';
+import { useRouter } from 'next/router';
 
-const video = mockVideo();
-const artists = Array.from({ length: random(1, 6) }, mockArtist);
 export const SingleVedioPage: React.FC = () => {
+    const { query } = useRouter()
+    const { id } = query;
+    const [video, setVideo] = useState<IVideo>()
+
+    useEffect(() => {
+        if (id)
+            (async () => {
+                try {
+                    const result = await request.get(`/videos/${id}`);
+                    setVideo(result.data)
+                } catch { }
+            })()
+    }, [id])
+
+    if (typeof video === 'undefined') return <LoadingComponent />
+
     return (
         <div className='flex flex-col space-y-6'>
             <div className='w-full h-[25rem] relative'>
@@ -27,9 +42,9 @@ export const SingleVedioPage: React.FC = () => {
                     artists
                 </p>}>
                     <Row gutter={[16, 16]} justify='center'>
-                        {artists.map(el =>
-                            <Col key={el.firstName}>
-                                <ArtistCard to='/artists/1' fullName={el.firstName + ' ' + el.lastName} overview={el.about} avatar={el.avatar} />
+                        {video.artists.map(el =>
+                            typeof el === 'object' && <Col key={el._id}>
+                                <ArtistCard to={`/artists/${el._id}`} fullName={el.firstName + ' ' + el.lastName} overview={el.about} avatar={el.avatar} />
                             </Col>
                         )}
                     </Row>

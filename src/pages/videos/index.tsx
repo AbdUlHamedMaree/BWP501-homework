@@ -5,13 +5,17 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { request } from '@/lib';
 
-const videoData = Array.from({ length: 20 }, mockVideo);
 const VideosPage: React.FC = () => {
     const { push } = useRouter();
     const [videos, setVideos] = useState<IVideo[]>()
 
     useEffect(() => {
-        request.get('/videos').then(e => setVideos(e.data))
+        (async () => {
+            try {
+                const result = await request.get('/videos');
+                setVideos(result.data);
+            } catch { }
+        })()
     }, [])
 
     if (typeof videos === 'undefined')
@@ -19,13 +23,13 @@ const VideosPage: React.FC = () => {
 
     return (
         <Row gutter={[16, 16]} justify='space-between'>
-            {videos.map((el, i) =>
-                <Col key={i}>
+            {videos.map((el) =>
+                <Col key={el._id}>
                     <VideoCard
                         title={el.title}
                         overview={el.overview}
                         img={{ src: el.cover, alt: el.title }}
-                        onShow={() => { push('/videos/1') }}
+                        onShow={() => { push(`/videos/${el._id}`) }}
                     />
                 </Col>
             )}

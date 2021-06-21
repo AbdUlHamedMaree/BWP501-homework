@@ -24,6 +24,11 @@ export const VideoCard: React.FC<Props> = ({ overview, img, onShow, title }) => 
                 <img
                     alt={img.src}
                     src={img.src}
+                    width='100%'
+                    style={{
+                        objectFit: 'cover',
+                        height: 400
+                    }}
                 />
             }
             actions={[

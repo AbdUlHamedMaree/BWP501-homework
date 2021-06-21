@@ -9,18 +9,16 @@ interface Props {
     fullName: string,
     overview: string,
     avatar: string;
-    onClick?: () => void;
     to: string
     children?: never
 }
 
-export const ArtistCard: React.FC<Props> = ({ overview, avatar, fullName, to, onClick }) => {
+export const ArtistCard: React.FC<Props> = ({ overview, avatar, fullName, to }) => {
     return (
         <Link href={to}>
             <Card
                 className='min-w-[200px] w-full max-w-[350px]'
                 hoverable
-                onClick={onClick}
             >
                 <Meta
                     avatar={

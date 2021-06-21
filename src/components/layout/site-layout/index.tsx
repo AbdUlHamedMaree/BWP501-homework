@@ -1,4 +1,4 @@
-import { Layout, Menu, Breadcrumb, Button } from 'antd';
+import { Layout, Menu, Breadcrumb, Button, Input } from 'antd';
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -28,8 +28,6 @@ export const SiteLayout: React.FC = ({ children }) => {
             </Breadcrumb>
         );
     }, [asPath]);
-
-    console.log({ loading, auth });
 
     return (
         <Layout className="min-h-screen">
@@ -68,7 +66,7 @@ export const SiteLayout: React.FC = ({ children }) => {
                             : null
                     }
                 </Menu>
-                {/* <MockVideoButton /> */}
+                <Input.Search placeholder="input search text" onSearch={() => console.log()} enterButton />
             </Header>
             <Content className='r-p' style={{ marginTop: 64 }}>
                 {breadcrumb}
