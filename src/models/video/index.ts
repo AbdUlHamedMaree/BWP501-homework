@@ -35,6 +35,7 @@ const schema = new Schema<IVideo>({
   duration: { type: Number, required: true },
   artists: [{ type: Types.ObjectId, ref: 'Artist' }],
 });
+schema.index({ '$**': 'text' });
 
 export const VideoModel =
   (models?.Video as Model<IVideo>) || model<IVideo>('Video', schema);

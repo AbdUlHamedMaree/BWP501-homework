@@ -8,7 +8,7 @@ const { Header, Footer, Content } = Layout;
 
 
 export const SiteLayout: React.FC = ({ children }) => {
-    const { pathname, asPath } = useRouter()
+    const { pathname, asPath, push } = useRouter()
     const { loading, auth } = useIsAuth()
 
     const breadcrumb = React.useMemo(() => {
@@ -66,7 +66,7 @@ export const SiteLayout: React.FC = ({ children }) => {
                             : null
                     }
                 </Menu>
-                <Input.Search placeholder="input search text" onSearch={() => console.log()} enterButton />
+                <Input.Search placeholder="input search text" onSearch={(value) => push(`/search?key=${value}`)} enterButton style={{ maxWidth: 400 }} />
             </Header>
             <Content className='r-p' style={{ marginTop: 64 }}>
                 {breadcrumb}

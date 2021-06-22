@@ -6,26 +6,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) =>
   new Promise<void>(async (resolve, reject) => {
     try {
       switch (req.method) {
-        case 'GET':
-          const all = await VideoModel.find(req.query).populate('artists');
-          res.status(200).json(all);
-          resolve();
-          break;
-
-        case 'POST':
-          const newVideo = await VideoModel.create(req.body);
-
-          await ArtistModel.updateMany(
-            { _id: newVideo.artists },
-            { $push: { videos: newVideo._id } },
-          );
-
-          res.status(201).json(newVideo);
+          case 'GET':
+              const { key } = req.query
+              if(typeof key === 'object') throw Error('ARRAY!')
+          const allV = (await VideoModel.find({}).populate('artists')).filter(e=>e.title.toLowerCase().includes(key));
+          const allA = (await ArtistModel.find({}).populate('videos')).filter(e=>e.firstName.toLowerCase().includes(key)||e.lastName.includes(key));
+          res.status(200).json({videos:allV,artists:allA});
           resolve();
           break;
 
         default:
-          res.setHeader('Allow', ['GET', 'POST']);
+          res.setHeader('Allow', ['GET']);
           res.status(405).end(`Method ${req.method} Not Allowed`);
           resolve();
           break;

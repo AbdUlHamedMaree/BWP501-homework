@@ -20,7 +20,7 @@ const schema = new Schema<IArtist>({
   about: requiredString,
   videos: [{ type: Types.ObjectId, ref: 'Video' }],
 });
-
+schema.index({'$**': 'text'});
 export const ArtistModel =
   (models?.Artist as Model<IArtist>) || model<IArtist>('Artist', schema);
 
